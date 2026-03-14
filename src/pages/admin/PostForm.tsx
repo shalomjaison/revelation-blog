@@ -42,6 +42,20 @@ export default function PostForm() {
     }, 0);
   }
 
+  function wrapColor(token: string) {
+    const el = textareaRef.current;
+    if (!el) return;
+    const start = el.selectionStart;
+    const end = el.selectionEnd;
+    const selected = content.slice(start, end);
+    const newContent = content.slice(0, start) + `[${token}]${selected}[/${token}]` + content.slice(end);
+    setContent(newContent);
+    setTimeout(() => {
+      el.focus();
+      el.setSelectionRange(start + token.length + 2, end + token.length + 2);
+    }, 0);
+  }
+
   function addBullet() {
     const el = textareaRef.current;
     if (!el) return;
@@ -234,6 +248,30 @@ export default function PostForm() {
             >
               • List
             </button>
+            <button
+              type="button"
+              onClick={() => wrapColor('navy')}
+              className="px-3 py-1 text-xs font-bold border border-slate-300 hover:bg-slate-100 transition-colors text-[#1b3a6b]"
+              title="Navy blue text (select text first)"
+            >
+              A
+            </button>
+            <button
+              type="button"
+              onClick={() => wrapColor('red')}
+              className="px-3 py-1 text-xs font-bold border border-slate-300 hover:bg-slate-100 transition-colors text-red-600"
+              title="Red text (select text first)"
+            >
+              A
+            </button>
+            <button
+              type="button"
+              onClick={() => wrapColor('hl')}
+              className="px-3 py-1 text-xs font-bold border border-slate-300 hover:bg-slate-100 transition-colors bg-yellow-200"
+              title="Highlight text (select text first)"
+            >
+              A
+            </button>
           </div>
           <textarea
             ref={textareaRef}
@@ -243,7 +281,7 @@ export default function PostForm() {
             rows={16}
             className="w-full border border-slate-300 px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-slate-900 resize-y font-serif leading-relaxed"
           />
-          <p className="text-xs text-slate-400 mt-1">Separate paragraphs with a blank line. Select text for **bold**, *italic*, or • List.</p>
+          <p className="text-xs text-slate-400 mt-1">Separate paragraphs with a blank line. Select text then click a toolbar button to format.</p>
         </div>
         {error && <p className="text-red-600 text-xs font-medium">{error}</p>}
         <div className="flex items-center gap-4">

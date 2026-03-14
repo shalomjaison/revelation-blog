@@ -14,6 +14,14 @@ import Dashboard from './pages/admin/Dashboard';
 import PostForm from './pages/admin/PostForm';
 import { API_URL } from './config';
 import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
+
+function applyColorTokens(text: string): string {
+  return text
+    .replace(/\[navy\]([\s\S]*?)\[\/navy\]/g, '<span style="color:#1b3a6b">$1</span>')
+    .replace(/\[red\]([\s\S]*?)\[\/red\]/g, '<span style="color:#dc2626">$1</span>')
+    .replace(/\[hl\]([\s\S]*?)\[\/hl\]/g, '<span style="background-color:#fef08a">$1</span>');
+}
 
 interface ApiPost {
   post_id: string;
@@ -171,7 +179,7 @@ function BlogPostView({ post, onBack }: { post: ApiPost, onBack: () => void }) {
       )}
 
       <div className="font-serif text-slate-700 leading-relaxed text-lg [&_p]:mb-6 [&_strong]:font-bold [&_em]:italic [&_ul]:mb-6 [&_ul]:pl-6 [&_ul]:list-disc [&_li]:mb-2">
-        <ReactMarkdown>{post.content}</ReactMarkdown>
+        <ReactMarkdown rehypePlugins={[rehypeRaw]}>{applyColorTokens(post.content)}</ReactMarkdown>
       </div>
     </article>
   );
