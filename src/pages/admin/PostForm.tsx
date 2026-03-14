@@ -42,6 +42,23 @@ export default function PostForm() {
     }, 0);
   }
 
+  function addBullet() {
+    const el = textareaRef.current;
+    if (!el) return;
+    const start = el.selectionStart;
+    const end = el.selectionEnd;
+    const selected = content.slice(start, end);
+    const bulleted = selected
+      ? selected.split('\n').map(line => `- ${line}`).join('\n')
+      : '- ';
+    const newContent = content.slice(0, start) + bulleted + content.slice(end);
+    setContent(newContent);
+    setTimeout(() => {
+      el.focus();
+      el.setSelectionRange(start + 2, start + 2);
+    }, 0);
+  }
+
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -209,6 +226,14 @@ export default function PostForm() {
             >
               I
             </button>
+            <button
+              type="button"
+              onClick={addBullet}
+              className="px-3 py-1 text-xs border border-slate-300 hover:bg-slate-100 transition-colors"
+              title="Bullet list (select lines or click to insert)"
+            >
+              • List
+            </button>
           </div>
           <textarea
             ref={textareaRef}
@@ -218,7 +243,7 @@ export default function PostForm() {
             rows={16}
             className="w-full border border-slate-300 px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-slate-900 resize-y font-serif leading-relaxed"
           />
-          <p className="text-xs text-slate-400 mt-1">Separate paragraphs with a blank line. Use **bold** and *italic*.</p>
+          <p className="text-xs text-slate-400 mt-1">Separate paragraphs with a blank line. Select text for **bold**, *italic*, or • List.</p>
         </div>
         {error && <p className="text-red-600 text-xs font-medium">{error}</p>}
         <div className="flex items-center gap-4">
