@@ -36,10 +36,10 @@ export default function PostForm() {
       const ext = file.name.split('.').pop();
       const path = `${Date.now()}.${ext}`;
       const { error: uploadError } = await supabase.storage
-        .from('post-images')
+        .from('post-image')
         .upload(path, file, { upsert: true });
       if (uploadError) throw uploadError;
-      const { data } = supabase.storage.from('post-images').getPublicUrl(path);
+      const { data } = supabase.storage.from('post-image').getPublicUrl(path);
       setHeaderImage(data.publicUrl);
     } catch (err) {
       setError(`Upload failed: ${(err as Error).message}`);
