@@ -16,6 +16,15 @@ import { API_URL } from './config';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 
+function stripFormatting(text: string): string {
+  return text
+    .replace(/\[navy\]([\s\S]*?)\[\/navy\]/g, '$1')
+    .replace(/\[red\]([\s\S]*?)\[\/red\]/g, '$1')
+    .replace(/\[hl\]([\s\S]*?)\[\/hl\]/g, '$1')
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/\*(.*?)\*/g, '$1');
+}
+
 function applyColorTokens(text: string): string {
   return text
     .replace(/\[navy\]([\s\S]*?)\[\/navy\]/g, '<span style="color:#1b3a6b">$1</span>')
@@ -94,7 +103,7 @@ function Hero() {
 }
 
 function BlogCard({ post, onClick }: { post: ApiPost, onClick: () => void }) {
-  const excerpt = post.content.split('\n\n')[0].slice(0, 180) + (post.content.length > 180 ? '…' : '');
+  const excerpt = stripFormatting(post.content.split('\n\n')[0]).slice(0, 180) + (post.content.length > 180 ? '…' : '');
   const date = new Date(post.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
