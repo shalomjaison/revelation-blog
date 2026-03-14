@@ -1,20 +1,43 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Revelation Studies Blog
 
-# Run and deploy your AI Studio app
+A blog dedicated to in-depth studies of the Book of Revelation. Built with React, TypeScript, and Vite.
 
-This contains everything you need to run your app locally.
+## Tech Stack
 
-View your app in AI Studio: https://ai.studio/apps/195ec284-8e3e-4b6b-99a4-ef75b23dcb5e
+- **React 19** — UI framework
+- **TypeScript** — Type safety
+- **Vite** — Build tool and dev server
+- **Tailwind CSS** — Styling
+- **Motion** — Animations
+- **Lenis** — Smooth scrolling
+- **Lucide React** — Icons
 
-## Run Locally
+## Getting Started
 
-**Prerequisites:**  Node.js
-
+**Prerequisites:** Node.js
 
 1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+   ```bash
+   npm install
+   ```
+
+2. Copy the example env file and add your API key:
+   ```bash
+   cp .env.example .env.local
+   ```
+
+3. Start the dev server:
+   ```bash
+   npm run dev
+   ```
+
+The app will be available at `http://localhost:3000`.
+
+## Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start development server |
+| `npm run build` | Build for production |
+| `npm run preview` | Preview production build |
+| `npm run lint` | Type-check with TypeScript |
