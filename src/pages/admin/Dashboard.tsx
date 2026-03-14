@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getToken } from '../../utils/auth';
+import { API_URL } from '../../config';
 
 interface Post {
   post_id: string;
@@ -19,7 +20,7 @@ export default function Dashboard() {
 
   async function fetchPosts() {
     try {
-      const res = await fetch('/api/posts');
+      const res = await fetch(`${API_URL}/posts`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       setPosts(data);
@@ -38,7 +39,7 @@ export default function Dashboard() {
     if (!window.confirm(`Delete "${title}"? This cannot be undone.`)) return;
     setDeletingId(id);
     try {
-      const res = await fetch(`/api/posts/${id}`, {
+      const res = await fetch(`${API_URL}/posts/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${getToken()}` },
       });

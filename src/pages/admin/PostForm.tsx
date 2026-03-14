@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getToken } from '../../utils/auth';
+import { API_URL } from '../../config';
 
 function toSlug(title: string): string {
   return title
@@ -27,11 +28,11 @@ export default function PostForm() {
     if (!isEdit) return;
     async function loadPost() {
       try {
-        const res = await fetch(`/api/posts/${id}`, {
+        const res = await fetch(`${API_URL}/posts/${id}`, {
           headers: { Authorization: `Bearer ${getToken()}` },
         });
         // Try by ID — server uses slug for GET single post, so we fetch all and find by id
-        const allRes = await fetch('/api/posts');
+        const allRes = await fetch(`${API_URL}/posts`);
         const allPosts = await allRes.json();
         const post = allPosts.find((p: any) => p.post_id === id);
         if (!post) throw new Error('Post not found');
@@ -61,7 +62,7 @@ export default function PostForm() {
     setError('');
     setLoading(true);
     try {
-      const url = isEdit ? `/api/posts/${id}` : '/api/posts';
+      const url = isEdit ? `${API_URL}/posts/${id}` : `${API_URL}/posts`;
       const method = isEdit ? 'PUT' : 'POST';
       const res = await fetch(url, {
         method,

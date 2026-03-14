@@ -12,6 +12,7 @@ import AdminLayout from './pages/admin/AdminLayout';
 import Login from './pages/admin/Login';
 import Dashboard from './pages/admin/Dashboard';
 import PostForm from './pages/admin/PostForm';
+import { API_URL } from './config';
 
 interface ApiPost {
   post_id: string;
@@ -229,7 +230,7 @@ function PublicBlog() {
   const [loadingPosts, setLoadingPosts] = useState(true);
 
   useEffect(() => {
-    fetch('/api/posts')
+    fetch(`${API_URL}/posts`)
       .then(r => r.json())
       .then(data => setPosts(Array.isArray(data) ? data : []))
       .catch(() => setPosts([]))
