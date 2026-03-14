@@ -170,7 +170,7 @@ function BlogPostView({ post, onBack }: { post: ApiPost, onBack: () => void }) {
         </div>
       )}
 
-      <div className="prose prose-slate prose-lg max-w-none font-serif text-slate-700 leading-relaxed">
+      <div className="font-serif text-slate-700 leading-relaxed text-lg [&_p]:mb-6 [&_strong]:font-bold [&_em]:italic [&_ul]:mb-6 [&_ul]:pl-6 [&_ul]:list-disc [&_li]:mb-2">
         <ReactMarkdown>{post.content}</ReactMarkdown>
       </div>
     </article>
