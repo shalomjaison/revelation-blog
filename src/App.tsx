@@ -228,6 +228,7 @@ function PublicBlog() {
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const [posts, setPosts] = useState<ApiPost[]>([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
+  const [newestFirst, setNewestFirst] = useState(false);
 
   useEffect(() => {
     fetch(`${API_URL}/posts`)
@@ -265,6 +266,10 @@ function PublicBlog() {
   }, [selectedPostId]);
 
   const selectedPost = posts.find(p => p.post_id === selectedPostId);
+  const sortedPosts = [...posts].sort((a, b) => {
+    const diff = new Date(a.created_date).getTime() - new Date(b.created_date).getTime();
+    return newestFirst ? -diff : diff;
+  });
 
   return (
     <div className="min-h-screen bg-[#FDFCF8] text-slate-900 font-sans selection:bg-slate-200 selection:text-slate-900 overflow-x-hidden">
@@ -284,7 +289,17 @@ function PublicBlog() {
                 No posts yet.
               </section>
             ) : (
-              <BlogGrid posts={posts} onPostClick={setSelectedPostId} />
+              <>
+                <div className="w-full max-w-6xl mx-auto px-6 flex justify-end">
+                  <button
+                    onClick={() => setNewestFirst(p => !p)}
+                    className="text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-slate-900 transition-colors border-b border-slate-300 hover:border-slate-900 pb-0.5"
+                  >
+                    {newestFirst ? 'Oldest First' : 'Newest First'}
+                  </button>
+                </div>
+                <BlogGrid posts={sortedPosts} onPostClick={setSelectedPostId} />
+              </>
             )}
           </>
         )}
