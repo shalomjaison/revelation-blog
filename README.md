@@ -2,7 +2,7 @@
 
 A blog dedicated to in-depth studies of the Book of Revelation, with a full admin CMS for managing posts.
 
-**Live site:** https://revelation-blog-peu6mqpas-shalomjaisons-projects.vercel.app
+**Live site:** https://revelation-blog.vercel.app
 **API:** https://blog-cms-api-95se.onrender.com
 
 ## Tech Stack
