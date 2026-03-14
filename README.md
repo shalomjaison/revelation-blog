@@ -11,6 +11,7 @@ A blog dedicated to in-depth studies of the Book of Revelation, with a full admi
 - React 19, TypeScript, Vite
 - Tailwind CSS, Lenis (smooth scroll), Lucide React
 - React Router DOM — client-side routing
+- react-markdown — renders bold/italic formatting in posts
 
 **Backend**
 - Express, Node.js, TypeScript
@@ -21,6 +22,7 @@ A blog dedicated to in-depth studies of the Book of Revelation, with a full admi
 - Frontend → Vercel
 - Backend → Render
 - Database → Supabase (PostgreSQL)
+- Image storage → Supabase Storage (`post-image` bucket)
 
 ## Project Structure
 
@@ -63,6 +65,8 @@ A blog dedicated to in-depth studies of the Book of Revelation, with a full admi
    DATABASE_URL=postgresql://...
    JWT_SECRET=your-secret
    VITE_API_URL=http://localhost:3001
+   VITE_SUPABASE_URL=https://your-project.supabase.co
+   VITE_SUPABASE_ANON_KEY=your-anon-key
    ```
 
 3. Run the database schema:
@@ -91,6 +95,18 @@ Visit `/admin/login` to access the CMS.
 | `/admin/dashboard` | View, edit, delete all posts |
 | `/admin/posts/new` | Create a new post |
 | `/admin/posts/edit/:id` | Edit an existing post |
+
+**Post editor features:**
+- Auto-generates slug from title
+- Image upload to Supabase Storage or paste a URL
+- Markdown toolbar — select text and click **B** (bold) or **I** (italic)
+- Separate paragraphs with a blank line
+
+## Public Blog Features
+
+- Posts fetched live from the API
+- Sort toggle: oldest → newest (default) or newest → oldest
+- Markdown rendered in post content
 
 ## API Endpoints
 
