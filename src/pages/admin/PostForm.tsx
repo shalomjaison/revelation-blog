@@ -26,6 +26,21 @@ export default function PostForm() {
   const [error, setError] = useState('');
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  function wrapSelection(marker: string) {
+    const el = textareaRef.current;
+    if (!el) return;
+    const start = el.selectionStart;
+    const end = el.selectionEnd;
+    const selected = content.slice(start, end);
+    const newContent = content.slice(0, start) + `${marker}${selected}${marker}` + content.slice(end);
+    setContent(newContent);
+    setTimeout(() => {
+      el.focus();
+      el.setSelectionRange(start + marker.length, end + marker.length);
+    }, 0);
+  }
 
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -177,13 +192,33 @@ export default function PostForm() {
           <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">
             Content
           </label>
+          <div className="flex gap-2 mb-1">
+            <button
+              type="button"
+              onClick={() => wrapSelection('**')}
+              className="px-3 py-1 text-xs font-bold border border-slate-300 hover:bg-slate-100 transition-colors"
+              title="Bold (select text first)"
+            >
+              B
+            </button>
+            <button
+              type="button"
+              onClick={() => wrapSelection('*')}
+              className="px-3 py-1 text-xs italic border border-slate-300 hover:bg-slate-100 transition-colors"
+              title="Italic (select text first)"
+            >
+              I
+            </button>
+          </div>
           <textarea
+            ref={textareaRef}
             value={content}
             onChange={e => setContent(e.target.value)}
             required
             rows={16}
             className="w-full border border-slate-300 px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-slate-900 resize-y font-serif leading-relaxed"
           />
+          <p className="text-xs text-slate-400 mt-1">Separate paragraphs with a blank line. Use **bold** and *italic*.</p>
         </div>
         {error && <p className="text-red-600 text-xs font-medium">{error}</p>}
         <div className="flex items-center gap-4">

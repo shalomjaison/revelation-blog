@@ -13,6 +13,7 @@ import Login from './pages/admin/Login';
 import Dashboard from './pages/admin/Dashboard';
 import PostForm from './pages/admin/PostForm';
 import { API_URL } from './config';
+import ReactMarkdown from 'react-markdown';
 
 interface ApiPost {
   post_id: string;
@@ -132,7 +133,6 @@ function BlogGrid({ posts, onPostClick }: { posts: ApiPost[], onPostClick: (id: 
 }
 
 function BlogPostView({ post, onBack }: { post: ApiPost, onBack: () => void }) {
-  const paragraphs = post.content.split('\n\n').filter(Boolean);
   const date = new Date(post.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   const initials = (post.author_name ?? 'A').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
 
@@ -171,9 +171,7 @@ function BlogPostView({ post, onBack }: { post: ApiPost, onBack: () => void }) {
       )}
 
       <div className="prose prose-slate prose-lg max-w-none font-serif text-slate-700 leading-relaxed">
-        {paragraphs.map((paragraph, idx) => (
-          <p key={idx} className="mb-6">{paragraph}</p>
-        ))}
+        <ReactMarkdown>{post.content}</ReactMarkdown>
       </div>
     </article>
   );
