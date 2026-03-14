@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getToken } from '../../utils/auth';
 import { API_URL } from '../../config';
+import { supabase } from '../../lib/supabase';
 
 function toSlug(title: string): string {
   return title
@@ -23,6 +24,29 @@ export default function PostForm() {
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(isEdit);
   const [error, setError] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setError('');
+    try {
+      const ext = file.name.split('.').pop();
+      const path = `${Date.now()}.${ext}`;
+      const { error: uploadError } = await supabase.storage
+        .from('post-images')
+        .upload(path, file, { upsert: true });
+      if (uploadError) throw uploadError;
+      const { data } = supabase.storage.from('post-images').getPublicUrl(path);
+      setHeaderImage(data.publicUrl);
+    } catch (err) {
+      setError(`Upload failed: ${(err as Error).message}`);
+    } finally {
+      setUploading(false);
+    }
+  }
 
   useEffect(() => {
     if (!isEdit) return;
@@ -116,15 +140,38 @@ export default function PostForm() {
         </div>
         <div>
           <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">
-            Header Image Path / URL
+            Header Image
           </label>
-          <input
-            type="text"
-            value={headerImage}
-            onChange={e => setHeaderImage(e.target.value)}
-            placeholder="https://... or /images/..."
-            className="w-full border border-slate-300 px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-slate-900"
-          />
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
+                className="bg-slate-100 border border-slate-300 px-4 py-2 text-xs font-bold uppercase tracking-widest text-slate-700 hover:bg-slate-200 transition-colors disabled:opacity-50"
+              >
+                {uploading ? 'Uploading...' : 'Upload Image'}
+              </button>
+              <span className="text-xs text-slate-400">or paste a URL below</span>
+            </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+            <input
+              type="text"
+              value={headerImage}
+              onChange={e => setHeaderImage(e.target.value)}
+              placeholder="https://..."
+              className="w-full border border-slate-300 px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-slate-900"
+            />
+            {headerImage && (
+              <img src={headerImage} alt="Preview" className="w-full max-h-48 object-cover border border-slate-200" />
+            )}
+          </div>
         </div>
         <div>
           <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">
