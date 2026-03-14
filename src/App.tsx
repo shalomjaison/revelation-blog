@@ -96,7 +96,7 @@ function BlogCard({ post, onClick }: { post: ApiPost, onClick: () => void }) {
           <img
             src={post.header_image_file_path}
             alt={post.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out grayscale group-hover:grayscale-0"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
             referrerPolicy="no-referrer"
           />
         ) : (
@@ -160,11 +160,11 @@ function BlogPostView({ post, onBack }: { post: ApiPost, onBack: () => void }) {
       </div>
 
       {post.header_image_file_path && (
-        <div className="w-full aspect-[16/9] md:aspect-[21/9] bg-slate-100 mb-12 overflow-hidden">
+        <div className="w-full mb-12">
           <img
             src={post.header_image_file_path}
             alt={post.title}
-            className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+            className="w-full h-auto"
             referrerPolicy="no-referrer"
           />
         </div>
