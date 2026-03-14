@@ -11,7 +11,7 @@ A blog dedicated to in-depth studies of the Book of Revelation, with a full admi
 - React 19, TypeScript, Vite
 - Tailwind CSS, Lenis (smooth scroll), Lucide React
 - React Router DOM — client-side routing
-- react-markdown — renders bold/italic formatting in posts
+- react-markdown + rehype-raw — renders markdown and inline HTML in posts
 
 **Backend**
 - Express, Node.js, TypeScript
@@ -99,7 +99,8 @@ Visit `/admin/login` to access the CMS.
 **Post editor features:**
 - Auto-generates slug from title
 - Image upload to Supabase Storage or paste a URL
-- Markdown toolbar — select text and click **B** (bold) or **I** (italic)
+- Markdown toolbar: **B** bold, *I* italic, • bullet list
+- Color toolbar: navy blue, red, yellow highlight
 - Separate paragraphs with a blank line
 
 ## Public Blog Features
